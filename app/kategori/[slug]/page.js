@@ -6,8 +6,9 @@ export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
 }
 
-export function generateMetadata({ params }) {
-  const cat = getCategory(params.slug);
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const cat = getCategory(slug);
   if (!cat) return {};
   return {
     title: `Berita ${cat.name} — News5`,
@@ -15,8 +16,9 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function KategoriPage({ params }) {
-  const cat = getCategory(params.slug);
+export default async function KategoriPage({ params }) {
+  const { slug } = await params;
+  const cat = getCategory(slug);
   if (!cat) notFound();
   const items = getByCategory(cat.slug);
 

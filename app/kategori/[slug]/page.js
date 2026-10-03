@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { categories, getCategory, getByCategory } from "../../../lib/articles";
 import { ArticleCard } from "../../../components/ArticleCard";
+import Reveal from "../../../components/Reveal";
 
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
@@ -43,8 +44,10 @@ export default async function KategoriPage({ params }) {
         </p>
       </div>
       <div className="cards-3" style={{ marginTop: 26 }}>
-        {items.map((a) => (
-          <ArticleCard key={a.slug} article={a} />
+        {items.map((a, i) => (
+          <Reveal key={a.slug} delay={(i % 3) * 110}>
+            <ArticleCard article={a} />
+          </Reveal>
         ))}
       </div>
     </div>

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import {
   articles,
@@ -8,7 +7,9 @@ import {
   getCategory,
   formatDate,
 } from "../../../lib/articles";
-import { ArticleCard, CategoryBadge } from "../../../components/ArticleCard";
+import { ArticleCard, CategoryKicker } from "../../../components/ArticleCard";
+import { ProgressBar, ShareButtons } from "../../../components/ArticleExtras";
+import Reveal from "../../../components/Reveal";
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
@@ -24,6 +25,15 @@ export async function generateMetadata({ params }) {
   };
 }
 
+function initials(name) {
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
 export default async function ArtikelDetail({ params }) {
   const { slug } = await params;
   const article = getArticle(slug);
@@ -33,19 +43,9 @@ export default async function ArtikelDetail({ params }) {
 
   return (
     <>
+      <ProgressBar />
       <div className="article-hero">
-        <Link
-          href={`/kategori/${cat.slug}`}
-          style={{
-            fontSize: 13,
-            fontWeight: 700,
-            color: cat.color,
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-          }}
-        >
-          {cat.name}
-        </Link>
+        <CategoryKicker slug={cat.slug} />
         <h1>{article.title}</h1>
         <p className="excerpt">{article.excerpt}</p>
         <div className="meta">
@@ -85,17 +85,31 @@ export default async function ArtikelDetail({ params }) {
         ))}
       </div>
 
+      <ShareButtons title={article.title} />
+
+      <div className="author-box">
+        <span className="avatar">{initials(article.author)}</span>
+        <div className="who">
+          <b>{article.author}</b>
+          <span>Jurnalis News5 — Kanal {cat.name}</span>
+        </div>
+      </div>
+
       <section className="section">
         <div className="container">
-          <div className="section-head">
-            <h2>
-              <span className="bar" style={{ background: "#6d28d9" }} />
-              Baca Juga
-            </h2>
-          </div>
+          <Reveal>
+            <div className="section-head">
+              <h2>
+                <span className="bar" style={{ background: "#6d28d9" }} />
+                Baca Juga
+              </h2>
+            </div>
+          </Reveal>
           <div className="cards-3">
-            {related.map((a) => (
-              <ArticleCard key={a.slug} article={a} />
+            {related.map((a, i) => (
+              <Reveal key={a.slug} delay={(i % 3) * 110}>
+                <ArticleCard article={a} />
+              </Reveal>
             ))}
           </div>
         </div>

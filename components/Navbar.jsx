@@ -5,7 +5,7 @@ import Link from "next/link";
 import { categories } from "../lib/articles";
 import { IconSearch, IconMenu, IconClose, IconChevron } from "./icons";
 
-function CategoryDrop({ dark }) {
+function CategoryDrop() {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -16,12 +16,7 @@ function CategoryDrop({ dark }) {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          minHeight: 44,
-        }}
+        aria-haspopup="true"
       >
         Kategori
         <span
@@ -30,24 +25,26 @@ function CategoryDrop({ dark }) {
             transition: "transform .2s",
             transform: open ? "rotate(180deg)" : "none",
             fontSize: 13,
+            marginLeft: 6,
           }}
         >
           <IconChevron />
         </span>
       </button>
-      <div className="drop-menu">
+      <div className="drop-menu" role="menu">
         {categories.map((c) => (
           <Link
             key={c.slug}
             href={`/kategori/${c.slug}`}
             onClick={() => setOpen(false)}
+            role="menuitem"
           >
-            <span className="cat-dot" style={{ background: c.color }} />
+            <span className="tick" />
             {c.name}
           </Link>
         ))}
-        <Link href="/artikel" onClick={() => setOpen(false)}>
-          <span className="cat-dot" style={{ background: "#a78bfa" }} />
+        <Link href="/artikel" onClick={() => setOpen(false)} role="menuitem">
+          <span className="tick" />
           Semua Kategori
         </Link>
       </div>
@@ -87,13 +84,13 @@ export default function Navbar() {
 
       <div className="slimnav">
         <div className="container">
-          <Link href="/" className="mini-brand">
+          <Link href="/" className="mini-brand" aria-label="News5 — beranda">
             N<span className="five">5</span>
           </Link>
           <nav className="slim-links" aria-label="Navigasi utama">
             <Link href="/">Home</Link>
             <Link href="/artikel">Artikel</Link>
-            <CategoryDrop dark />
+            <CategoryDrop />
             <Link href="/tentang">Tentang</Link>
             <Link href="/kontak">Kontak</Link>
           </nav>
@@ -110,12 +107,16 @@ export default function Navbar() {
               className="burger"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Menu navigasi"
+              aria-expanded={mobileOpen}
             >
               {mobileOpen ? <IconClose /> : <IconMenu />}
             </button>
           </div>
         </div>
-        <div className={`slim-mobile ${mobileOpen ? "open" : ""}`}>
+        <nav
+          className={`slim-mobile ${mobileOpen ? "open" : ""}`}
+          aria-label="Menu navigasi seluler"
+        >
           <Link href="/" onClick={() => setMobileOpen(false)}>
             Home
           </Link>
@@ -128,7 +129,7 @@ export default function Navbar() {
               href={`/kategori/${c.slug}`}
               onClick={() => setMobileOpen(false)}
             >
-              <span className="cat-dot" style={{ background: c.color }} />
+              <span className="tick" />
               {c.name}
             </Link>
           ))}
@@ -138,7 +139,7 @@ export default function Navbar() {
           <Link href="/kontak" onClick={() => setMobileOpen(false)}>
             Kontak
           </Link>
-        </div>
+        </nav>
       </div>
     </>
   );

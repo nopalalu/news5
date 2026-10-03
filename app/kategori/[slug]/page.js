@@ -26,19 +26,8 @@ export default async function KategoriPage({ params }) {
   return (
     <div className="container" style={{ paddingBottom: 40 }}>
       <div className="page-head">
-        <h1>
-          <span
-            className="cat-dot"
-            style={{
-              background: cat.color,
-              width: 14,
-              height: 14,
-              display: "inline-block",
-              marginRight: 12,
-            }}
-          />
-          {cat.name}
-        </h1>
+        <span className="k-label">Kanal Berita</span>
+        <h1 style={{ marginTop: 14 }}>{cat.name}</h1>
         <p>
           {cat.tagline} — {items.length} artikel
         </p>

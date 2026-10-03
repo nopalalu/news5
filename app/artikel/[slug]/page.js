@@ -41,6 +41,10 @@ export default async function ArtikelDetail({ params }) {
   const cat = getCategory(article.category);
   const related = getRelated(article, 3);
 
+  const paras = article.content || [];
+  const firstHalf = paras.slice(0, 2);
+  const rest = paras.slice(2);
+
   return (
     <>
       <ProgressBar />
@@ -60,20 +64,29 @@ export default async function ArtikelDetail({ params }) {
         </div>
       </div>
 
-      <div className="article-img">
-        <Image
-          src={article.image}
-          alt={article.title}
-          width={1000}
-          height={560}
-          style={{ width: "100%", height: "auto" }}
-          priority
-        />
-      </div>
+      <figure className="article-img">
+        <span className="frame" style={{ display: "block" }}>
+          <Image
+            src={article.image}
+            alt={article.title}
+            width={1000}
+            height={560}
+            style={{ width: "100%", height: "auto" }}
+            priority
+          />
+        </span>
+        <figcaption>
+          {article.title} — Foto: News5/{cat.name}
+        </figcaption>
+      </figure>
 
       <div className="article-body">
-        {article.content.map((p, i) => (
+        {firstHalf.map((p, i) => (
           <p key={i}>{p}</p>
+        ))}
+        <aside className="pullquote">“{article.excerpt}”</aside>
+        {rest.map((p, i) => (
+          <p key={i + 2}>{p}</p>
         ))}
       </div>
 
@@ -88,21 +101,21 @@ export default async function ArtikelDetail({ params }) {
       <ShareButtons title={article.title} />
 
       <div className="author-box">
-        <span className="avatar">{initials(article.author)}</span>
-        <div className="who">
-          <b>{article.author}</b>
-          <span>Jurnalis News5 — Kanal {cat.name}</span>
+        <div className="inner">
+          <span className="avatar">{initials(article.author)}</span>
+          <div className="who">
+            <b>{article.author}</b>
+            <span>Jurnalis News5 — Kanal {cat.name}</span>
+          </div>
         </div>
       </div>
 
       <section className="section">
         <div className="container">
           <Reveal>
-            <div className="section-head">
-              <h2>
-                <span className="bar" style={{ background: "#6d28d9" }} />
-                Baca Juga
-              </h2>
+            <div className="sec-head" style={{ marginBottom: 30 }}>
+              <h2>Baca Juga</h2>
+              <span className="count">Kanal {cat.name}</span>
             </div>
           </Reveal>
           <div className="cards-3">

@@ -4,41 +4,20 @@ import { getCategory, formatDate } from "../lib/articles";
 import { IconClock } from "./icons";
 
 /**
- * Kicker editorial — label kategori yang bisa diklik.
- * Varian: "line" (default, teks + kotak warna) atau "sticker".
+ * Kicker editorial v3 — label kategori monokrom + aksen merah.
+ * API dipertahankan: slug, link, variant, onDark (diabaikan, demi kompatibilitas).
  */
-export function CategoryKicker({
-  slug,
-  link = true,
-  onDark = false,
-  variant = "line",
-}) {
+export function CategoryKicker({ slug, link = true }) {
   const cat = getCategory(slug);
   if (!cat) return null;
 
-  if (variant === "sticker") {
-    const el = <span className="sticker" style={{ background: cat.color }}>{cat.name}</span>;
-    if (!link) return el;
-    return <Link href={`/kategori/${cat.slug}`}>{el}</Link>;
-  }
-
-  const inner = (
-    <>
-      <span className="kicker-sq" style={{ background: cat.color }} />
-      {cat.name}
-    </>
-  );
-  const cls = `kicker${onDark ? " on-dark" : ""}`;
-  const style = onDark ? undefined : { color: cat.color };
+  const inner = <>{cat.name}</>;
+  const cls = "kicker";
   if (!link) {
-    return (
-      <span className={cls} style={style}>
-        {inner}
-      </span>
-    );
+    return <span className={cls}>{inner}</span>;
   }
   return (
-    <Link href={`/kategori/${cat.slug}`} className={cls} style={style}>
+    <Link href={`/kategori/${cat.slug}`} className={cls}>
       {inner}
     </Link>
   );
@@ -51,9 +30,7 @@ export function Meta({ article }) {
       <span>•</span>
       <span>{formatDate(article.date)}</span>
       <span>•</span>
-      <span
-        style={{ display: "inline-flex", alignItems: "center", gap: 5 }}
-      >
+      <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
         <IconClock />
         {article.readMinutes} mnt
       </span>
@@ -68,18 +45,19 @@ export function ArticleCard({ article }) {
         href={`/artikel/${article.slug}`}
         className="card-img"
         aria-label={article.title}
+        tabIndex={-1}
       >
         <Image
           src={article.image}
           alt={article.title}
           width={640}
-          height={360}
+          height={400}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </Link>
       <div className="card-body">
         <CategoryKicker slug={article.category} />
-        <h3 style={{ marginTop: 10 }}>
+        <h3>
           <Link href={`/artikel/${article.slug}`}>{article.title}</Link>
         </h3>
         <p>{article.excerpt}</p>
@@ -96,6 +74,7 @@ export function ArticleRow({ article }) {
         href={`/artikel/${article.slug}`}
         className="card-img"
         aria-label={article.title}
+        tabIndex={-1}
       >
         <Image
           src={article.image}
@@ -107,7 +86,7 @@ export function ArticleRow({ article }) {
       </Link>
       <div className="card-body">
         <CategoryKicker slug={article.category} />
-        <h3 style={{ marginTop: 10 }}>
+        <h3>
           <Link href={`/artikel/${article.slug}`}>{article.title}</Link>
         </h3>
         <p>{article.excerpt}</p>

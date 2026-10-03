@@ -21,10 +21,7 @@ export default function Ticker() {
                 href={`/artikel/${a.slug}`}
                 className="ticker-item"
               >
-                <span
-                  className="ticker-cat"
-                  style={{ color: getCategory(a.category)?.color }}
-                >
+                <span className="ticker-cat">
                   {getCategory(a.category)?.name}
                 </span>
                 {a.title}

@@ -53,7 +53,6 @@ export default function ArtikelPage() {
             className={`chip ${cat === c.slug ? "active" : ""}`}
             onClick={() => setCat(c.slug)}
           >
-            <span className="cat-dot" style={{ background: c.color }} />
             {c.name}
           </button>
         ))}

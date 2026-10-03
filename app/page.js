@@ -9,103 +9,111 @@ import {
   getCategory,
   formatDate,
 } from "../lib/articles";
-import {
-  ArticleCard,
-  CategoryKicker,
-  Meta,
-} from "../components/ArticleCard";
+import { ArticleCard, CategoryKicker } from "../components/ArticleCard";
 import NewsletterForm from "../components/NewsletterForm";
 import Reveal from "../components/Reveal";
 import Ticker from "../components/Ticker";
-import { IconArrow, IconMail } from "../components/icons";
+import { IconArrow } from "../components/icons";
 
 export default function Home() {
   const featured = getFeatured();
   const trending = getTrending(5);
   const latest = getLatest(6, featured.slug);
+  const featCat = getCategory(featured.category);
 
   return (
     <>
       <Ticker />
 
-      {/* SAMPUL — cover story */}
-      <section className="sampul">
-        <div className="container sampul-grid">
+      {/* COVER — headline raksasa ala sampul majalah */}
+      <section className="cover">
+        <div className="container">
           <Reveal>
-            <div>
-              <span className="stamp">Edisi Utama</span>
-              <div>
-                <CategoryKicker slug={featured.category} link={false} onDark />
-              </div>
-              <h1>
-                <Link href={`/artikel/${featured.slug}`}>
-                  {featured.title}
-                </Link>
-              </h1>
-              <p className="lede">{featured.excerpt}</p>
-              <Meta article={featured} />
-              <Link
-                href={`/artikel/${featured.slug}`}
-                className="read-btn"
-              >
-                Baca Selengkapnya <IconArrow />
-              </Link>
+            <div className="cover-kicker-row">
+              <span className="k-label">Laporan Utama</span>
+              <span className="rule" />
+              <CategoryKicker slug={featured.category} />
             </div>
+            <h1>
+              <Link href={`/artikel/${featured.slug}`}>{featured.title}</Link>
+            </h1>
           </Reveal>
-          <Reveal delay={140}>
-            <Link
-              href={`/artikel/${featured.slug}`}
-              className="duo"
-              aria-label={featured.title}
-            >
-              <Image
-                src={featured.image}
-                alt={featured.title}
-                fill
-                priority
-                style={{ objectFit: "cover" }}
-              />
-            </Link>
-          </Reveal>
+          <div className="cover-grid">
+            <Reveal>
+              <div>
+                <p className="lede">{featured.excerpt}</p>
+                <div className="dateline">
+                  <span>
+                    Oleh <b>{featured.author}</b>
+                  </span>
+                  <span>·</span>
+                  <span>{featCat?.name}</span>
+                  <span>·</span>
+                  <span>{formatDate(featured.date)}</span>
+                  <span>·</span>
+                  <span>{featured.readMinutes} menit baca</span>
+                </div>
+                <Link
+                  href={`/artikel/${featured.slug}`}
+                  className="read-btn"
+                >
+                  Baca Selengkapnya <IconArrow />
+                </Link>
+              </div>
+            </Reveal>
+            <Reveal delay={140}>
+              <figure className="cover-fig">
+                <span className="stamp">Edisi Utama</span>
+                <Link
+                  href={`/artikel/${featured.slug}`}
+                  className="frame"
+                  aria-label={featured.title}
+                >
+                  <Image
+                    src={featured.image}
+                    alt={featured.title}
+                    width={880}
+                    height={660}
+                    priority
+                  />
+                </Link>
+                <figcaption>
+                  {featured.title} — Foto: News5/{featCat?.name}
+                </figcaption>
+              </figure>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* TERPOPULER — index */}
-      <section className="pop-sec">
+      {/* TERPOPULER — indeks bernomor */}
+      <section className="index-sec">
         <div className="container">
           <Reveal>
-            <div className="pop-head">
+            <div className="sec-head">
               <h2>Terpopuler</h2>
-              <span className="count">5 ARTIKEL · PEKAN INI</span>
+              <span className="count">5 artikel · pekan ini</span>
             </div>
           </Reveal>
           <div>
             {trending.map((a, i) => (
               <Reveal key={a.slug} delay={i * 70}>
-                <div className="idx-row">
-                  <span className="idx-num">
+                <Link href={`/artikel/${a.slug}`} className="idx-row">
+                  <span className="idx-num" aria-hidden="true">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <Link
-                    href={`/artikel/${a.slug}`}
-                    className="title"
-                  >
-                    {a.title}
-                  </Link>
-                  <span
-                    className="idx-cat"
-                    style={{ color: getCategory(a.category)?.color }}
-                  >
+                  <span className="title">{a.title}</span>
+                  <span className="idx-cat">
                     {getCategory(a.category)?.name}
                   </span>
-                </div>
+                </Link>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CHAPTERS */}
+      {/* CHAPTERS — tiap kategori jadi bab */}
       {categories.map((cat, ci) => {
         const items = getByCategory(cat.slug);
         return (
@@ -113,12 +121,15 @@ export default function Home() {
             <div className="container">
               <Reveal>
                 <div className="chapter-head">
-                  <span className="ghost-num">
+                  <span className="ghost-num" aria-hidden="true">
                     {String(ci + 1).padStart(2, "0")}
                   </span>
-                  <div className="ch-meta">
-                    <CategoryKicker slug={cat.slug} variant="sticker" />
-                    <p>{cat.tagline}</p>
+                  <div>
+                    <span className="k-label">
+                      Bab {String(ci + 1).padStart(2, "0")} · Kanal
+                    </span>
+                    <div className="ch-name">{cat.name}</div>
+                    <p className="ch-desc">{cat.tagline}</p>
                   </div>
                   <Link
                     href={`/kategori/${cat.slug}`}
@@ -140,86 +151,64 @@ export default function Home() {
         );
       })}
 
-      {/* KABAR TERBARU — index with thumbs */}
-      <section className="chapter latest-idx">
+      {/* KABAR TERBARU — indeks + thumbnail */}
+      <section className="index-sec">
         <div className="container">
           <Reveal>
-            <div className="chapter-head">
-              <span className="ghost-num">05</span>
-              <div className="ch-meta">
-                <span
-                  className="sticker"
-                  style={{ background: "#6d28d9" }}
-                >
-                  Kabar Terbaru
-                </span>
-                <p>Berita paling segar dari semua kanal</p>
-              </div>
-              <Link href="/artikel" className="more">
-                Semua artikel <IconArrow />
-              </Link>
+            <div className="sec-head">
+              <h2>Kabar Terbaru</h2>
+              <span className="count">
+                <Link href="/artikel" className="more">
+                  Semua artikel <IconArrow />
+                </Link>
+              </span>
             </div>
           </Reveal>
           <div>
             {latest.map((a, i) => (
               <Reveal key={a.slug} delay={Math.min(i, 3) * 70}>
-                <div className="idx-row">
-                  <span className="idx-num">
+                <Link href={`/artikel/${a.slug}`} className="idx-row">
+                  <span className="idx-num" aria-hidden="true">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <div>
-                    <div style={{ marginBottom: 8 }}>
-                      <CategoryKicker slug={a.category} />
-                    </div>
-                    <Link
-                      href={`/artikel/${a.slug}`}
-                      className="title"
-                    >
-                      {a.title}
-                    </Link>
-                    <div
+                  <span>
+                    <span className="idx-cat" style={{ display: "block", marginBottom: 8 }}>
+                      {getCategory(a.category)?.name}
+                    </span>
+                    <span className="title">{a.title}</span>
+                    <span
                       className="meta"
-                      style={{ marginTop: 8 }}
+                      style={{ marginTop: 10, borderTop: "none", paddingTop: 0 }}
                     >
                       <span>{a.author}</span>
                       <span>•</span>
                       <span>{formatDate(a.date)}</span>
-                    </div>
-                  </div>
-                  <Link
-                    href={`/artikel/${a.slug}`}
-                    className="idx-thumb"
-                    aria-label={a.title}
-                    tabIndex={-1}
-                  >
+                    </span>
+                  </span>
+                  <span className="idx-thumb" aria-hidden="true">
                     <Image
                       src={a.image}
                       alt=""
-                      width={380}
-                      height={240}
+                      width={420}
+                      height={260}
                     />
-                  </Link>
-                </div>
+                  </span>
+                </Link>
               </Reveal>
             ))}
           </div>
 
           <Reveal delay={120}>
-            <aside
-              className="side-box"
-              style={{ marginTop: 34, position: "static" }}
-            >
-              <h3
-                style={{ display: "flex", alignItems: "center", gap: 10 }}
-              >
-                <span style={{ color: "var(--brand)", fontSize: 22 }}>
-                  <IconMail />
-                </span>
-                Kabar Pagi News5
-              </h3>
+            <aside className="news-panel">
+              <span className="k-label" style={{ color: "var(--paper)" }}>
+                Newsletter
+              </span>
+              <h2 style={{ marginTop: 14 }}>
+                Kabar Pagi <em>News5</em>, langsung ke email kamu.
+              </h2>
               <p>
-                Ringkasan berita terpenting setiap pagi, langsung ke email
-                kamu. Gratis, tanpa spam.
+                Ringkasan berita terpenting setiap pagi. Gratis, tanpa spam,
+                berhenti kapan saja.
               </p>
               <NewsletterForm />
             </aside>

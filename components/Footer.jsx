@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer>
       <div className="container">
-        <div className="foot-word">
+        <div className="foot-word" aria-hidden="true">
           News<span className="five">5</span>
         </div>
         <div className="foot-tag">Kabar cepat · Tepat · Terpercaya</div>

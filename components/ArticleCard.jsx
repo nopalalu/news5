@@ -5,11 +5,23 @@ import { IconClock } from "./icons";
 
 /**
  * Kicker editorial — label kategori yang bisa diklik.
- * Dipakai sebagai link di kartu, sebagai teks statis di atas gambar hero.
+ * Varian: "line" (default, teks + kotak warna) atau "sticker".
  */
-export function CategoryKicker({ slug, link = true, onDark = false }) {
+export function CategoryKicker({
+  slug,
+  link = true,
+  onDark = false,
+  variant = "line",
+}) {
   const cat = getCategory(slug);
   if (!cat) return null;
+
+  if (variant === "sticker") {
+    const el = <span className="sticker" style={{ background: cat.color }}>{cat.name}</span>;
+    if (!link) return el;
+    return <Link href={`/kategori/${cat.slug}`}>{el}</Link>;
+  }
+
   const inner = (
     <>
       <span className="kicker-sq" style={{ background: cat.color }} />

@@ -14,8 +14,9 @@ export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
 }
 
-export function generateMetadata({ params }) {
-  const article = getArticle(params.slug);
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const article = getArticle(slug);
   if (!article) return {};
   return {
     title: `${article.title} — News5`,
@@ -23,8 +24,9 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function ArtikelDetail({ params }) {
-  const article = getArticle(params.slug);
+export default async function ArtikelDetail({ params }) {
+  const { slug } = await params;
+  const article = getArticle(slug);
   if (!article) notFound();
   const cat = getCategory(article.category);
   const related = getRelated(article, 3);

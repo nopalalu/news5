@@ -1,23 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getCategory, formatDate } from "../lib/articles";
+import { getCategory } from "../lib/articles";
 import { IconClock } from "./icons";
+import { T, CatName, FDate } from "./Lang";
 
 /**
- * Kicker editorial v3 — label kategori monokrom + aksen merah.
- * API dipertahankan: slug, link, variant, onDark (diabaikan, demi kompatibilitas).
+ * Kicker editorial v3 — label kategori monokrom + aksen merah,
+ * mengikuti bahasa aktif.
  */
 export function CategoryKicker({ slug, link = true }) {
   const cat = getCategory(slug);
   if (!cat) return null;
 
-  const inner = <>{cat.name}</>;
-  const cls = "kicker";
+  const inner = <CatName slug={slug} />;
   if (!link) {
-    return <span className={cls}>{inner}</span>;
+    return <span className="kicker">{inner}</span>;
   }
   return (
-    <Link href={`/kategori/${cat.slug}`} className={cls}>
+    <Link href={`/kategori/${cat.slug}`} className="kicker">
       {inner}
     </Link>
   );
@@ -28,11 +28,13 @@ export function Meta({ article }) {
     <div className="meta">
       <span>{article.author}</span>
       <span>•</span>
-      <span>{formatDate(article.date)}</span>
+      <span>
+        <FDate iso={article.date} />
+      </span>
       <span>•</span>
       <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
         <IconClock />
-        {article.readMinutes} mnt
+        <T k="card.readTime" vars={{ n: article.readMinutes }} />
       </span>
     </div>
   );
@@ -60,7 +62,6 @@ export function ArticleCard({ article }) {
         <h3>
           <Link href={`/artikel/${article.slug}`}>{article.title}</Link>
         </h3>
-        <p>{article.excerpt}</p>
         <Meta article={article} />
       </div>
     </article>
@@ -89,7 +90,6 @@ export function ArticleRow({ article }) {
         <h3>
           <Link href={`/artikel/${article.slug}`}>{article.title}</Link>
         </h3>
-        <p>{article.excerpt}</p>
         <Meta article={article} />
       </div>
     </article>

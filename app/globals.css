@@ -91,7 +91,7 @@ img { display: block; max-width: 100%; }
    ============================================================ */
 .masthead {
   background: var(--paper);
-  padding-top: 14px;
+  padding-top: 10px;
 }
 .mast-top {
   display: flex;
@@ -122,21 +122,21 @@ img { display: block; max-width: 100%; }
   text-align: center;
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(4rem, 15vw, 10rem);
+  font-size: clamp(2.7rem, 7.5vw, 5.2rem);
   line-height: 0.95;
   letter-spacing: -0.03em;
   text-decoration: none;
   color: var(--ink);
-  margin: 18px 0 4px;
+  margin: 10px 0 2px;
 }
 .wordmark .five { color: var(--red); }
 .wordmark-sub {
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--muted);
-  padding-bottom: 16px;
+  padding-bottom: 10px;
 }
 
 /* ============================================================
@@ -368,7 +368,7 @@ img { display: block; max-width: 100%; }
    COVER — hero story
    ============================================================ */
 .cover {
-  padding: 44px 0 54px;
+  padding: 30px 0 44px;
 }
 .cover-kicker-row {
   display: flex;
@@ -380,7 +380,7 @@ img { display: block; max-width: 100%; }
 .cover h1 {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(2.5rem, 6.4vw, 5.2rem);
+  font-size: clamp(2.3rem, 5.6vw, 4.4rem);
   line-height: 1.02;
   letter-spacing: -0.025em;
   margin: 0 0 20px;
@@ -650,6 +650,11 @@ a.idx-row:hover { background: var(--paper-2); }
   letter-spacing: -0.01em;
   margin: 12px 0 10px;
   text-wrap: balance;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.28em * 3);
 }
 .card-body h3 a { text-decoration: none; }
 .card-body h3 a:hover { color: var(--red); }
@@ -1285,9 +1290,14 @@ footer {
   100% { transform: translateX(280%); }
 }
 
-/* ============================================================
-   REVEAL on scroll
-   ============================================================ */
+/* Foto gaya cetak koran: hitam-putih, kontras tegas.
+   Menyamarkan kesan "AI" dan menyatukan seluruh visual. */
+.card-img img,
+.cover-fig img,
+.idx-thumb img,
+.article-img .frame img {
+  filter: grayscale(1) contrast(1.07);
+}
 .reveal {
   opacity: 0;
   transform: translateY(26px);
@@ -1295,7 +1305,12 @@ footer {
 }
 .reveal.visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal, .reveal-wipe, .reveal-left, .reveal-mask {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
   .ticker-track { animation: none; }
   * { scroll-behavior: auto; }
 }
@@ -1338,4 +1353,131 @@ footer {
   .hz-card { grid-template-columns: 1fr; }
   .hz-card .card-img { border-right: none; border-bottom: 2px solid var(--ink); }
   .wordmark-sub { letter-spacing: 0.2em; }
+}
+
+/* ============================================================
+   v3.1 — varian animasi antimainstream, kawat berita,
+   hero muat satu viewport, toggle bahasa
+   ============================================================ */
+
+/* --- Reveal: wipe (gambar tersibak seperti halaman) --- */
+.reveal-wipe {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.reveal-wipe.visible { clip-path: inset(0 0 0 0); }
+
+/* --- Reveal: geser dari kiri (daftar indeks) --- */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-34px);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+.reveal-left.visible { opacity: 1; transform: none; }
+
+/* --- Reveal: headline tersingkap topeng (mask) --- */
+.reveal-mask {
+  opacity: 1;
+  transform: translateY(46px);
+  clip-path: inset(-12% 0 112% 0);
+  transition:
+    clip-path 0.85s cubic-bezier(0.7, 0, 0.2, 1),
+    transform 0.85s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.reveal-mask.visible {
+  transform: none;
+  clip-path: inset(-12% 0 -12% 0);
+}
+
+/* --- Reveal default: naik halus + sedikit putar (kartu) --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px) rotate(-0.4deg);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* --- KAWAT BERITA (news wire) --- */
+.wire-list { margin-top: 4px; }
+.wire-row {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 20px;
+  align-items: baseline;
+  padding: 20px 8px;
+  border-top: 1px solid var(--hair);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.wire-row:first-of-type { border-top: 2px solid var(--ink); }
+a.wire-row:hover { background: var(--paper-2); }
+.wire-row:hover .title { color: var(--red); }
+.wire-time {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.wire-row .title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  display: block;
+  transition: color 0.15s ease;
+}
+.wire-row .idx-cat { display: block; margin-bottom: 6px; }
+.wire-meta {
+  display: block;
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* --- Toggle bahasa --- */
+.lang-toggle {
+  display: inline-flex;
+  border: 2px solid var(--ink);
+  background: var(--card);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.lang-toggle button {
+  min-width: 48px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  color: var(--muted);
+}
+.lang-toggle button + button { border-left: 2px solid var(--ink); }
+.lang-toggle button.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* --- Hero muat satu viewport di desktop --- */
+@media (min-width: 901px) {
+  .cover-grid { align-items: stretch; }
+  .cover-fig { display: flex; flex-direction: column; }
+  .cover-fig .frame { height: min(52vh, 500px); }
+  .cover-fig img { height: 100%; aspect-ratio: auto; }
+}
+
+@media (max-width: 640px) {
+  .wire-row { grid-template-columns: 62px 1fr; gap: 14px; }
+  .slimnav .container { gap: 12px; }
 }

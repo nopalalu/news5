@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useLang } from "./Lang";
 
 export default function NewsletterForm() {
   const [done, setDone] = useState(false);
+  const { t } = useLang();
 
   if (done) {
     return (
-      <p style={{ fontSize: 14, color: "#047857", fontWeight: 600 }}>
-        ✅ Terima kasih! Cek email kamu untuk konfirmasi.
+      <p style={{ fontSize: 14, color: "#7fd08a", fontWeight: 600 }}>
+        {t("news.done")}
       </p>
     );
   }
@@ -21,9 +23,14 @@ export default function NewsletterForm() {
         setDone(true);
       }}
     >
-      <input type="email" placeholder="alamat@email.com" required />
+      <input
+        type="email"
+        placeholder={t("news.ph")}
+        required
+        aria-label="Email"
+      />
       <button className="btn" type="submit">
-        Daftar
+        {t("news.btn")}
       </button>
     </form>
   );

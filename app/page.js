@@ -7,30 +7,32 @@ import {
   getByCategory,
   getLatest,
   getCategory,
-  formatDate,
 } from "../lib/articles";
 import { ArticleCard, CategoryKicker } from "../components/ArticleCard";
 import NewsletterForm from "../components/NewsletterForm";
 import Reveal from "../components/Reveal";
 import Ticker from "../components/Ticker";
+import { T, CatName, CatTagline, FDate, IndexLink } from "../components/Lang";
 import { IconArrow } from "../components/icons";
 
 export default function Home() {
   const featured = getFeatured();
   const trending = getTrending(5);
-  const latest = getLatest(6, featured.slug);
+  const wire = getLatest(6, featured.slug);
   const featCat = getCategory(featured.category);
 
   return (
     <>
       <Ticker />
 
-      {/* COVER — headline raksasa ala sampul majalah */}
+      {/* COVER — muat satu layar, headline tersingkap topeng */}
       <section className="cover">
         <div className="container">
-          <Reveal>
+          <Reveal variant="mask">
             <div className="cover-kicker-row">
-              <span className="k-label">Laporan Utama</span>
+              <span className="k-label">
+                <T k="hero.kicker" />
+              </span>
               <span className="rule" />
               <CategoryKicker slug={featured.category} />
             </div>
@@ -39,31 +41,39 @@ export default function Home() {
             </h1>
           </Reveal>
           <div className="cover-grid">
-            <Reveal>
+            <Reveal variant="left">
               <div>
                 <p className="lede">{featured.excerpt}</p>
                 <div className="dateline">
                   <span>
-                    Oleh <b>{featured.author}</b>
+                    <T k="hero.by" /> <b>{featured.author}</b>
                   </span>
                   <span>·</span>
-                  <span>{featCat?.name}</span>
+                  <span>
+                    <CatName slug={featured.category} />
+                  </span>
                   <span>·</span>
-                  <span>{formatDate(featured.date)}</span>
+                  <span>
+                    <FDate iso={featured.date} />
+                  </span>
                   <span>·</span>
-                  <span>{featured.readMinutes} menit baca</span>
+                  <span>
+                    <T k="hero.minRead" vars={{ n: featured.readMinutes }} />
+                  </span>
                 </div>
                 <Link
                   href={`/artikel/${featured.slug}`}
                   className="read-btn"
                 >
-                  Baca Selengkapnya <IconArrow />
+                  <T k="hero.readMore" /> <IconArrow />
                 </Link>
               </div>
             </Reveal>
-            <Reveal delay={140}>
+            <Reveal variant="wipe" delay={140}>
               <figure className="cover-fig">
-                <span className="stamp">Edisi Utama</span>
+                <span className="stamp">
+                  <T k="hero.kicker" />
+                </span>
                 <Link
                   href={`/artikel/${featured.slug}`}
                   className="frame"
@@ -78,7 +88,8 @@ export default function Home() {
                   />
                 </Link>
                 <figcaption>
-                  {featured.title} — Foto: News5/{featCat?.name}
+                  {featured.title} — Foto: News5/
+                  <CatName slug={featured.category} />
                 </figcaption>
               </figure>
             </Reveal>
@@ -86,25 +97,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TERPOPULER — indeks bernomor */}
+      {/* TERPOPULER — indeks bernomor, masuk dari kiri */}
       <section className="index-sec">
         <div className="container">
-          <Reveal>
+          <Reveal variant="mask">
             <div className="sec-head">
-              <h2>Terpopuler</h2>
-              <span className="count">5 artikel · pekan ini</span>
+              <h2>
+                <T k="pop.title" />
+              </h2>
+              <span className="count">
+                <T k="pop.count" vars={{ n: trending.length }} />
+              </span>
             </div>
           </Reveal>
           <div>
             {trending.map((a, i) => (
-              <Reveal key={a.slug} delay={i * 70}>
+              <Reveal key={a.slug} delay={i * 70} variant="left">
                 <Link href={`/artikel/${a.slug}`} className="idx-row">
                   <span className="idx-num" aria-hidden="true">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="title">{a.title}</span>
                   <span className="idx-cat">
-                    {getCategory(a.category)?.name}
+                    <CatName slug={a.category} />
                   </span>
                 </Link>
               </Reveal>
@@ -119,24 +134,28 @@ export default function Home() {
         return (
           <section className="chapter" key={cat.slug}>
             <div className="container">
-              <Reveal>
+              <Reveal variant="mask">
                 <div className="chapter-head">
                   <span className="ghost-num" aria-hidden="true">
                     {String(ci + 1).padStart(2, "0")}
                   </span>
                   <div>
                     <span className="k-label">
-                      Bab {String(ci + 1).padStart(2, "0")} · Kanal
+                      <T k="ch.bab" /> {String(ci + 1).padStart(2, "0")} ·{" "}
+                      <T k="ch.kanal" />
                     </span>
-                    <div className="ch-name">{cat.name}</div>
-                    <p className="ch-desc">{cat.tagline}</p>
+                    <div className="ch-name">
+                      <CatName slug={cat.slug} />
+                    </div>
+                    <p className="ch-desc">
+                      <CatTagline slug={cat.slug} />
+                    </p>
                   </div>
-                  <Link
+                  <IndexLink
+                    slug={cat.slug}
                     href={`/kategori/${cat.slug}`}
-                    className="more"
-                  >
-                    Indeks {cat.name} <IconArrow />
-                  </Link>
+                    arrow={<IconArrow />}
+                  />
                 </div>
               </Reveal>
               <div className="chapter-grid">
@@ -151,64 +170,55 @@ export default function Home() {
         );
       })}
 
-      {/* KABAR TERBARU — indeks + thumbnail */}
+      {/* KAWAT BERITA — newswire dengan jam terbit */}
       <section className="index-sec">
         <div className="container">
-          <Reveal>
+          <Reveal variant="mask">
             <div className="sec-head">
-              <h2>Kabar Terbaru</h2>
+              <h2>
+                <T k="wire.title" />
+              </h2>
               <span className="count">
-                <Link href="/artikel" className="more">
-                  Semua artikel <IconArrow />
-                </Link>
+                <T k="wire.sub" />
               </span>
             </div>
           </Reveal>
-          <div>
-            {latest.map((a, i) => (
-              <Reveal key={a.slug} delay={Math.min(i, 3) * 70}>
-                <Link href={`/artikel/${a.slug}`} className="idx-row">
-                  <span className="idx-num" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+          <div className="wire-list">
+            {wire.map((a, i) => (
+              <Reveal key={a.slug} delay={Math.min(i, 4) * 60} variant="left">
+                <Link href={`/artikel/${a.slug}`} className="wire-row">
+                  <span className="wire-time">{a.time} WIB</span>
                   <span>
-                    <span className="idx-cat" style={{ display: "block", marginBottom: 8 }}>
-                      {getCategory(a.category)?.name}
+                    <span className="idx-cat">
+                      <CatName slug={a.category} />
                     </span>
                     <span className="title">{a.title}</span>
-                    <span
-                      className="meta"
-                      style={{ marginTop: 10, borderTop: "none", paddingTop: 0 }}
-                    >
-                      <span>{a.author}</span>
-                      <span>•</span>
-                      <span>{formatDate(a.date)}</span>
+                    <span className="wire-meta">
+                      {a.author} · <FDate iso={a.date} />
                     </span>
-                  </span>
-                  <span className="idx-thumb" aria-hidden="true">
-                    <Image
-                      src={a.image}
-                      alt=""
-                      width={420}
-                      height={260}
-                    />
                   </span>
                 </Link>
               </Reveal>
             ))}
           </div>
+          <Reveal delay={100}>
+            <div style={{ marginTop: 26 }}>
+              <Link href="/artikel" className="more">
+                <T k="wire.all" /> <IconArrow />
+              </Link>
+            </div>
+          </Reveal>
 
           <Reveal delay={120}>
             <aside className="news-panel">
               <span className="k-label" style={{ color: "var(--paper)" }}>
-                Newsletter
+                <T k="news.kicker" />
               </span>
               <h2 style={{ marginTop: 14 }}>
-                Kabar Pagi <em>News5</em>, langsung ke email kamu.
+                <T k="news.title" />
               </h2>
               <p>
-                Ringkasan berita terpenting setiap pagi. Gratis, tanpa spam,
-                berhenti kapan saja.
+                <T k="news.desc" />
               </p>
               <NewsletterForm />
             </aside>

@@ -2,40 +2,35 @@
 
 import { useState } from "react";
 import { IconMail, IconPin, IconCheck } from "../../components/icons";
+import { useLang } from "../../components/Lang";
 
 export default function KontakPage() {
   const [sent, setSent] = useState(false);
+  const { t } = useLang();
 
   return (
     <div className="prose-narrow">
-      <h1>Kontak Redaksi</h1>
-      <p>
-        Ada koreksi berita, usulan liputan, atau sekadar ingin menyapa?
-        Kirim pesan ke redaksi News5 melalui formulir di bawah ini.
-      </p>
+      <h1>{t("contact.title")}</h1>
+      <p>{t("contact.p1")}</p>
 
       <div className="contact-grid">
         <div className="contact-card">
-          <h3
-            style={{ display: "flex", alignItems: "center", gap: 10 }}
-          >
+          <h3 style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ color: "var(--brand)", fontSize: 22 }}>
               <IconMail />
             </span>
-            Email
+            {t("contact.email")}
           </h3>
           <p>redaksi@news5.id</p>
         </div>
         <div className="contact-card">
-          <h3
-            style={{ display: "flex", alignItems: "center", gap: 10 }}
-          >
+          <h3 style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ color: "var(--brand)", fontSize: 22 }}>
               <IconPin />
             </span>
-            Alamat
+            {t("contact.address")}
           </h3>
-          <p>Purwokerto, Jawa Tengah, Indonesia</p>
+          <p>{t("contact.addressVal")}</p>
         </div>
       </div>
 
@@ -53,12 +48,9 @@ export default function KontakPage() {
             }}
           >
             <IconCheck />
-            Pesan terkirim!
+            {t("contact.sentTitle")}
           </h3>
-          <p>
-            Terima kasih, pesan kamu sudah kami terima. Redaksi akan
-            menindaklanjuti secepatnya.
-          </p>
+          <p>{t("contact.sentDesc")}</p>
         </div>
       ) : (
         <form
@@ -69,18 +61,18 @@ export default function KontakPage() {
             setSent(true);
           }}
         >
-          <h3>Kirim Pesan</h3>
-          <label>Nama</label>
-          <input type="text" placeholder="Nama kamu" required />
+          <h3>{t("contact.formTitle")}</h3>
+          <label>{t("contact.name")}</label>
+          <input type="text" placeholder={t("contact.namePh")} required />
           <label>Email</label>
-          <input type="email" placeholder="alamat@email.com" required />
-          <label>Topik</label>
-          <input type="text" placeholder="cth. Koreksi berita, usulan liputan…" />
-          <label>Pesan</label>
-          <textarea placeholder="Tulis pesan kamu di sini…" required />
+          <input type="email" placeholder={t("contact.emailPh")} required />
+          <label>{t("contact.topic")}</label>
+          <input type="text" placeholder={t("contact.topicPh")} />
+          <label>{t("contact.message")}</label>
+          <textarea placeholder={t("contact.messagePh")} required />
           <div style={{ marginTop: 18 }}>
             <button className="btn" type="submit">
-              Kirim Pesan
+              {t("contact.send")}
             </button>
           </div>
         </form>

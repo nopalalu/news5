@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { T } from "./Lang";
 
 /**
  * Splash intro: dimainkan sekali per sesi, sebelum konten inti tampil.
@@ -42,7 +43,7 @@ export default function Intro() {
         </div>
         <div className="intro-tag">
           <span style={{ animationDelay: "450ms" }}>
-            Berita terupdate setiap hari
+            <T k="intro.tag" />
           </span>
         </div>
         <div className="intro-bar">

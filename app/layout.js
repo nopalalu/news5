@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Intro from "../components/Intro";
+import { LangProvider } from "../components/Lang";
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -25,10 +26,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
-        <Intro />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <LangProvider>
+          <Intro />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </LangProvider>
       </body>
     </html>
   );

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { IconLink, IconCheck } from "./icons";
+import { useLang } from "./Lang";
 
 export function ProgressBar() {
   const [progress, setProgress] = useState(0);
@@ -26,6 +27,7 @@ export function ProgressBar() {
 
 export function ShareButtons({ title }) {
   const [copied, setCopied] = useState(false);
+  const { t } = useLang();
 
   const share = async (network) => {
     const url = window.location.href;
@@ -47,7 +49,7 @@ export function ShareButtons({ title }) {
 
   return (
     <div className="share-row">
-      <span className="share-label">Bagikan:</span>
+      <span className="share-label">{t("art.share")}</span>
       <button className="share-btn" onClick={() => share("x")}>
         <b>X</b>
       </button>
@@ -59,7 +61,7 @@ export function ShareButtons({ title }) {
         onClick={() => share("copy")}
       >
         {copied ? <IconCheck /> : <IconLink />}
-        <span>{copied ? "Tersalin!" : "Salin tautan"}</span>
+        <span>{copied ? t("art.copied") : t("art.copy")}</span>
       </button>
     </div>
   );

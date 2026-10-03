@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { articles, getCategory } from "../lib/articles";
 import { IconFlame } from "./icons";
+import { T, CatName } from "./Lang";
 
 export default function Ticker() {
   const items = articles.slice(0, 8);
@@ -11,7 +12,7 @@ export default function Ticker() {
       <div className="container ticker-inner">
         <span className="ticker-label">
           <IconFlame />
-          Terkini
+          <T k="ticker.latest" />
         </span>
         <div className="ticker-viewport">
           <div className="ticker-track">
@@ -22,7 +23,7 @@ export default function Ticker() {
                 className="ticker-item"
               >
                 <span className="ticker-cat">
-                  {getCategory(a.category)?.name}
+                  <CatName slug={a.category} />
                 </span>
                 {a.title}
               </Link>

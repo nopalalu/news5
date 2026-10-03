@@ -4,8 +4,14 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Bungkus konten agar muncul dengan animasi saat masuk viewport.
+ * variant: "up" (default) | "wipe" | "left" | "mask"
  */
-export default function Reveal({ children, delay = 0, className = "" }) {
+export default function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  variant = "up",
+}) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -27,10 +33,21 @@ export default function Reveal({ children, delay = 0, className = "" }) {
     return () => io.disconnect();
   }, []);
 
+  const variantClass =
+    variant === "up"
+      ? ""
+      : variant === "wipe"
+        ? "reveal-wipe"
+        : variant === "left"
+          ? "reveal-left"
+          : variant === "mask"
+            ? "reveal-mask"
+            : "";
+
   return (
     <div
       ref={ref}
-      className={`reveal ${visible ? "visible" : ""} ${className}`}
+      className={`reveal ${variantClass} ${visible ? "visible" : ""} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}

@@ -904,7 +904,7 @@ a.kicker:hover { text-decoration: underline; }
   text-transform: uppercase;
 }
 .article-img {
-  max-width: 1000px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -1406,6 +1406,13 @@ a.idx-row:hover .idx-thumb img,
   .hz-card { grid-template-columns: 1fr; }
   .hz-card .card-img { border-right: none; border-bottom: 2px solid var(--ink); }
   .wordmark-sub { letter-spacing: 0.2em; }
+  /* --- v3.5: halaman artikel di HP — gambar hero full-bleed ala web berita --- */
+  .article-hero { padding-top: 30px; }
+  .article-hero .meta { margin-bottom: 26px; }
+  .article-img { padding: 0; max-width: none; }
+  .article-img .frame { border-left: none; border-right: none; box-shadow: none; }
+  .article-img figcaption { margin: 10px 20px 0; }
+  .article-body { font-size: 17px; padding-top: 32px; }
 }
 
 /* ============================================================

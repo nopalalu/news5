@@ -8,6 +8,8 @@ import {
   getCategory,
 } from "../../lib/articles";
 import { ArticleCard } from "../../components/ArticleCard";
+import { IconNews } from "../../components/icons";
+import Reveal from "../../components/Reveal";
 
 export default function ArtikelPage() {
   const [query, setQuery] = useState("");
@@ -32,7 +34,7 @@ export default function ArtikelPage() {
       <div className="search-row">
         <input
           type="text"
-          placeholder="🔍 Cari artikel… mis. “pemilu”, “konser”, “esports”"
+          placeholder="Cari artikel… mis. pemilu, konser, esports"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -59,7 +61,9 @@ export default function ArtikelPage() {
 
       {results.length === 0 ? (
         <div className="empty">
-          <div className="big">📰</div>
+          <div className="big" style={{ color: "var(--faint)", fontSize: 52 }}>
+            <IconNews />
+          </div>
           <p>
             Tidak ada artikel yang cocok dengan “<b>{query}</b>”.
             <br />
@@ -78,8 +82,10 @@ export default function ArtikelPage() {
             )}
           </p>
           <div className="cards-3">
-            {results.map((a) => (
-              <ArticleCard key={a.slug} article={a} />
+            {results.map((a, i) => (
+              <Reveal key={a.slug} delay={(i % 3) * 90}>
+                <ArticleCard article={a} />
+              </Reveal>
             ))}
           </div>
         </>

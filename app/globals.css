@@ -624,10 +624,11 @@ a.idx-row:hover { background: var(--paper-2); }
   flex-direction: column;
   transition: box-shadow 0.25s ease;
 }
-/* Hover "rol tinta": bayangan kartu ikut ke-tinta ungu.
-   Bintang utamanya sapuan rol di foto (di bawah). */
+/* Hover "rol tinta": bayangan kartu ikut ke-tinta ungu (sedikit tertunda,
+   biar berurutan sama sapuan rol). Bintang utamanya sapuan di foto. */
 .card:hover {
   box-shadow: 6px 6px 0 var(--accent);
+  transition: box-shadow 0.3s ease 0.12s;
 }
 .card-img {
   display: block;
@@ -642,8 +643,9 @@ a.idx-row:hover { background: var(--paper-2); }
   object-fit: cover;
   transition: filter 0.45s ease;
 }
-/* Foto tidak di-zoom (itu pasaran) — cukup berubah warna di belakang sapuan rol */
-/* Tekstur halftone koran, muncul samar saat hover */
+/* Foto tidak di-zoom (itu pasaran) — warnanya mekar dengan jeda,
+   pas di tengah sapuan rol */
+/* Tekstur halftone koran, muncul samar setelah rol lewat */
 .card-img::before {
   content: "";
   position: absolute;
@@ -655,23 +657,30 @@ a.idx-row:hover { background: var(--paper-2); }
   transition: opacity 0.45s ease;
   pointer-events: none;
 }
-.card:hover .card-img::before { opacity: 0.22; }
-/* Rol tinta ungu menyapu foto: masuk dari kiri, keluar ke kanan */
+.card:hover .card-img::before {
+  opacity: 0.2;
+  transition: opacity 0.6s ease 0.32s;
+}
+.card:hover .card-img img {
+  transition: filter 0.5s ease 0.16s;
+}
+/* Pita rol tinta: bertepi lembut, meluncur konstan dari kiri ke kanan */
 .card-img::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 45%;
   z-index: 2;
-  background: var(--accent);
-  transform: scaleX(0);
+  background: linear-gradient(90deg, transparent, var(--accent) 32%, var(--accent) 68%, transparent);
+  transform: translateX(-110%);
   pointer-events: none;
 }
-.card:hover .card-img::after { animation: ink-roll 0.65s cubic-bezier(0.7, 0, 0.2, 1); }
-@keyframes ink-roll {
-  0% { transform: scaleX(0); transform-origin: left center; }
-  45% { transform: scaleX(1); transform-origin: left center; }
-  55% { transform: scaleX(1); transform-origin: right center; }
-  100% { transform: scaleX(0); transform-origin: right center; }
+.card:hover .card-img::after { animation: ink-pass 0.85s cubic-bezier(0.65, 0, 0.35, 1); }
+@keyframes ink-pass {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(240%); }
 }
 .card-body { padding: 20px 20px 22px; display: flex; flex-direction: column; flex: 1; }
 .card-body h3 {

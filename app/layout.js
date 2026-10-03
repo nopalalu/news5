@@ -22,25 +22,10 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const today = new Date().toLocaleDateString("id-ID", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
   return (
     <html lang="id" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
         <Intro />
-        <div className="topbar">
-          <div className="container">
-            <span>
-              <span className="live-dot" />
-              {today} — Edisi Pagi
-            </span>
-            <span>Berita terupdate hanya di News5</span>
-          </div>
-        </div>
         <Navbar />
         <main>{children}</main>
         <Footer />

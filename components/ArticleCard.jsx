@@ -1,24 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getCategory } from "../lib/articles";
+import { getCategory, formatDate } from "../lib/articles";
 import { IconClock } from "./icons";
-import { T, CatName, FDate } from "./Lang";
 
-/**
- * Kicker editorial v3 — label kategori monokrom + aksen merah,
- * mengikuti bahasa aktif.
- */
+/** Kicker editorial — label kategori monokrom + aksen ungu. */
 export function CategoryKicker({ slug, link = true }) {
   const cat = getCategory(slug);
   if (!cat) return null;
 
-  const inner = <CatName slug={slug} />;
   if (!link) {
-    return <span className="kicker">{inner}</span>;
+    return <span className="kicker">{cat.name}</span>;
   }
   return (
     <Link href={`/kategori/${cat.slug}`} className="kicker">
-      {inner}
+      {cat.name}
     </Link>
   );
 }
@@ -28,13 +23,11 @@ export function Meta({ article }) {
     <div className="meta">
       <span>{article.author}</span>
       <span>•</span>
-      <span>
-        <FDate iso={article.date} />
-      </span>
+      <span>{formatDate(article.date)}</span>
       <span>•</span>
       <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
         <IconClock />
-        <T k="card.readTime" vars={{ n: article.readMinutes }} />
+        {article.readMinutes} mnt
       </span>
     </div>
   );

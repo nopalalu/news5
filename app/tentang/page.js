@@ -1,5 +1,4 @@
 import { IconCheck } from "../../components/icons";
-import { T } from "../../components/Lang";
 
 export const metadata = {
   title: "Tentang Kami — News5",
@@ -7,18 +6,27 @@ export const metadata = {
 };
 
 const team = [
-  { name: "Rina Kartika", roleKey: "about.r1" },
-  { name: "Salsa Bila", roleKey: "about.r2" },
-  { name: "Andi Nugraha", roleKey: "about.r3" },
-  { name: "Rizky Ramadhan", roleKey: "about.r4" },
-  { name: "Maya Anggraini", roleKey: "about.r5" },
-  { name: "Bagas Pratama", roleKey: "about.r6" },
+  { name: "Rina Kartika", role: "Redaktur Kanal Hukum" },
+  { name: "Salsa Bila", role: "Redaktur Kanal Hiburan" },
+  { name: "Andi Nugraha", role: "Redaktur Kanal Politik" },
+  { name: "Rizky Ramadhan", role: "Redaktur Kanal Game" },
+  { name: "Maya Anggraini", role: "Jurnalis Ekonomi & UMKM" },
+  { name: "Bagas Pratama", role: "Jurnalis Hiburan & Game" },
 ];
 
 const values = [
-  { titleKey: "about.v1t", descKey: "about.v1d" },
-  { titleKey: "about.v2t", descKey: "about.v2d" },
-  { titleKey: "about.v3t", descKey: "about.v3d" },
+  {
+    title: "Akurasi dulu, kecepatan kemudian",
+    desc: "Kami memverifikasi fakta sebelum menekan tombol terbit. Satu koreksi terbuka lebih baik daripada seribu klik dari judul menyesatkan.",
+  },
+  {
+    title: "Tanpa clickbait",
+    desc: "Judul kami menggambarkan isi. Pembaca yang kecewa dengan judul tidak akan kembali — kami membangun kepercayaan, bukan sekadar traffic.",
+  },
+  {
+    title: "Terbuka untuk semua",
+    desc: "Tanpa login wajib, tanpa paywall. Informasi yang baik seharusnya bisa diakses siapa pun.",
+  },
 ];
 
 function initials(name) {
@@ -33,61 +41,53 @@ function initials(name) {
 export default function TentangPage() {
   return (
     <div className="prose-narrow">
-      <h1>
-        <T k="about.title" />
-      </h1>
+      <h1>Tentang News5</h1>
       <p>
-        <T k="about.p1" />
+        <b>News5</b> adalah portal berita modern yang lahir dari proyek
+        perkuliahan dan dibangun ulang dengan teknologi terkini. Kami
+        menyajikan liputan dalam empat kanal utama: <b>Hukum</b>,{" "}
+        <b>Hiburan</b>, <b>Politik</b>, dan <b>Game</b> — topik-topik yang
+        paling relevan dengan keseharian pembaca Indonesia.
       </p>
       <p>
-        <T k="about.p2" />
+        Misi kami sederhana: menyajikan berita yang <b>cepat</b>,{" "}
+        <b>akurat</b>, dan <b>mudah dibaca</b>. Tanpa clickbait berlebihan,
+        tanpa login wajib, tanpa paywall — cukup buka dan baca.
       </p>
 
       <div className="stat-row">
         <div className="stat">
           <div className="num">4</div>
-          <div className="lbl">
-            <T k="about.s1" />
-          </div>
+          <div className="lbl">Kanal Berita</div>
         </div>
         <div className="stat">
           <div className="num">12+</div>
-          <div className="lbl">
-            <T k="about.s2" />
-          </div>
+          <div className="lbl">Artikel Terbit</div>
         </div>
         <div className="stat">
           <div className="num">100%</div>
-          <div className="lbl">
-            <T k="about.s3" />
-          </div>
+          <div className="lbl">Gratis Dibaca</div>
         </div>
       </div>
 
-      <h2>
-        <T k="about.valuesTitle" />
-      </h2>
+      <h2>Prinsip Redaksi</h2>
       <ul className="values">
         {values.map((v) => (
-          <li key={v.titleKey}>
+          <li key={v.title}>
             <span className="v-check">
               <IconCheck />
             </span>
             <span>
-              <b>
-                <T k={v.titleKey} />.
-              </b>{" "}
-              <T k={v.descKey} />
+              <b>{v.title}.</b> {v.desc}
             </span>
           </li>
         ))}
       </ul>
 
-      <h2>
-        <T k="about.teamTitle" />
-      </h2>
+      <h2>Tim Redaksi</h2>
       <p>
-        <T k="about.teamP" />
+        News5 dijalankan oleh tim kecil yang merangkap banyak peran —
+        menulis, mengedit, memotret, dan menerbitkan.
       </p>
       <div className="team-grid">
         {team.map((t) => (
@@ -95,19 +95,21 @@ export default function TentangPage() {
             <span className="avatar">{initials(t.name)}</span>
             <div>
               <b>{t.name}</b>
-              <span>
-                <T k={t.roleKey} />
-              </span>
+              <span>{t.role}</span>
             </div>
           </div>
         ))}
       </div>
 
       <p>
-        <T k="about.p3" />
+        Versi ini merupakan <i>rebuild</i> modern dari aplikasi portal berita
+        News5 yang sebelumnya dibangun dengan Laravel + Livewire. Kini
+        dibangun ulang dengan Next.js agar lebih cepat, responsif, dan mudah
+        diakses dari perangkat apa pun.
       </p>
       <p>
-        <T k="about.p4" />
+        Punya masukan, koreksi, atau ide liputan? Jangan ragu menghubungi
+        redaksi melalui halaman kontak.
       </p>
     </div>
   );

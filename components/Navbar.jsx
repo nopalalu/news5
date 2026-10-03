@@ -4,11 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { categories } from "../lib/articles";
 import { IconSearch, IconMenu, IconClose, IconChevron } from "./icons";
-import { useLang, T, LangToggle } from "./Lang";
 
 function CategoryDrop() {
   const [open, setOpen] = useState(false);
-  const { t } = useLang();
   return (
     <div
       className={`drop ${open ? "open" : ""}`}
@@ -20,7 +18,7 @@ function CategoryDrop() {
         aria-expanded={open}
         aria-haspopup="true"
       >
-        <T k="nav.category" />
+        Kategori
         <span
           style={{
             display: "inline-flex",
@@ -42,12 +40,12 @@ function CategoryDrop() {
             role="menuitem"
           >
             <span className="tick" />
-            {t(`cat.${c.slug}`)}
+            {c.name}
           </Link>
         ))}
         <Link href="/artikel" onClick={() => setOpen(false)} role="menuitem">
           <span className="tick" />
-          <T k="nav.allCategories" />
+          Semua Kategori
         </Link>
       </div>
     </div>
@@ -56,8 +54,7 @@ function CategoryDrop() {
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { lang, t } = useLang();
-  const today = new Date().toLocaleDateString(lang === "en" ? "en-US" : "id-ID", {
+  const today = new Date().toLocaleDateString("id-ID", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -73,16 +70,14 @@ export default function Navbar() {
               <span className="live-dot" />
               {today}
             </span>
-            <span>
-              <T k="mast.edition" />
-            </span>
+            <span>Edisi Pagi — Terbit Setiap Hari</span>
             <span>news5.id</span>
           </div>
           <Link href="/" className="wordmark" aria-label="News5 — beranda">
             News<span className="five">5</span>
           </Link>
           <div className="wordmark-sub">
-            <T k="mast.tagline" />
+            Kabar cepat · Tepat · Terpercaya
           </div>
         </div>
       </header>
@@ -93,36 +88,25 @@ export default function Navbar() {
             N<span className="five">5</span>
           </Link>
           <nav className="slim-links" aria-label="Navigasi utama">
-            <Link href="/">
-              <T k="nav.home" />
-            </Link>
-            <Link href="/artikel">
-              <T k="nav.articles" />
-            </Link>
+            <Link href="/">Home</Link>
+            <Link href="/artikel">Artikel</Link>
             <CategoryDrop />
-            <Link href="/tentang">
-              <T k="nav.about" />
-            </Link>
-            <Link href="/kontak">
-              <T k="nav.contact" />
-            </Link>
+            <Link href="/tentang">Tentang</Link>
+            <Link href="/kontak">Kontak</Link>
           </nav>
           <div className="slim-right">
-            <LangToggle />
             <Link
               href="/artikel"
               className="slim-search"
-              aria-label={t("nav.search")}
+              aria-label="Cari berita"
             >
               <IconSearch />
-              <span>
-                <T k="nav.search" />
-              </span>
+              <span>Cari berita…</span>
             </Link>
             <button
               className="burger"
               onClick={() => setMobileOpen((v) => !v)}
-              aria-label={t("nav.menu")}
+              aria-label="Menu navigasi"
               aria-expanded={mobileOpen}
             >
               {mobileOpen ? <IconClose /> : <IconMenu />}
@@ -131,13 +115,13 @@ export default function Navbar() {
         </div>
         <nav
           className={`slim-mobile ${mobileOpen ? "open" : ""}`}
-          aria-label={t("nav.menu")}
+          aria-label="Menu navigasi seluler"
         >
           <Link href="/" onClick={() => setMobileOpen(false)}>
-            <T k="nav.home" />
+            Home
           </Link>
           <Link href="/artikel" onClick={() => setMobileOpen(false)}>
-            <T k="nav.articles" />
+            Semua Artikel
           </Link>
           {categories.map((c) => (
             <Link
@@ -146,14 +130,14 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
             >
               <span className="tick" />
-              {t(`cat.${c.slug}`)}
+              {c.name}
             </Link>
           ))}
           <Link href="/tentang" onClick={() => setMobileOpen(false)}>
-            <T k="nav.about" />
+            Tentang
           </Link>
           <Link href="/kontak" onClick={() => setMobileOpen(false)}>
-            <T k="nav.contact" />
+            Kontak
           </Link>
         </nav>
       </div>

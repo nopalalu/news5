@@ -3,8 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Bungkus konten agar muncul dengan animasi saat masuk viewport.
- * variant: "up" (default) | "wipe" | "left" | "mask"
+ * Reveal anti-gagal: konten KELIHATAN by default.
+ * IntersectionObserver hanya menambahkan class "play" untuk memicu
+ * animasi masuk. Kalau JS/IO gagal, konten tetap tampil.
+ *
+ * variant: "up" (default) | "left" | "mask" | "wipe"
  */
 export default function Reveal({
   children,
@@ -13,7 +16,7 @@ export default function Reveal({
   variant = "up",
 }) {
   const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
+  const [play, setPlay] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -22,33 +25,31 @@ export default function Reveal({
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) {
-            setVisible(true);
+            setPlay(true);
             io.disconnect();
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  const variantClass =
-    variant === "up"
-      ? ""
-      : variant === "wipe"
-        ? "reveal-wipe"
-        : variant === "left"
-          ? "reveal-left"
-          : variant === "mask"
-            ? "reveal-mask"
-            : "";
+  const v =
+    variant === "left"
+      ? "rv-left"
+      : variant === "mask"
+        ? "rv-mask"
+        : variant === "wipe"
+          ? "rv-wipe"
+          : "rv-up";
 
   return (
     <div
       ref={ref}
-      className={`reveal ${variantClass} ${visible ? "visible" : ""} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+      className={`rv ${v}${play ? " play" : ""} ${className}`}
+      style={{ animationDelay: `${delay}ms` }}
     >
       {children}
     </div>

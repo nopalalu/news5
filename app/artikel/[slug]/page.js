@@ -5,11 +5,11 @@ import {
   getArticle,
   getRelated,
   getCategory,
+  formatDate,
 } from "../../../lib/articles";
 import { ArticleCard, CategoryKicker } from "../../../components/ArticleCard";
 import { ProgressBar, ShareButtons } from "../../../components/ArticleExtras";
 import Reveal from "../../../components/Reveal";
-import { T, CatName, FDate, ArtJournalist, ArtChannel } from "../../../components/Lang";
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
@@ -58,13 +58,9 @@ export default async function ArtikelDetail({ params }) {
             News5
           </span>
           <span>•</span>
-          <span>
-            <FDate iso={article.date} />
-          </span>
+          <span>{formatDate(article.date)}</span>
           <span>•</span>
-          <span>
-            <T k="hero.minRead" vars={{ n: article.readMinutes }} />
-          </span>
+          <span>{article.readMinutes} menit baca</span>
         </div>
       </div>
 
@@ -80,7 +76,7 @@ export default async function ArtikelDetail({ params }) {
           />
         </span>
         <figcaption>
-          {article.title} — Foto: News5/<CatName slug={cat.slug} />
+          {article.title} — Foto: News5/{cat.name}
         </figcaption>
       </figure>
 
@@ -109,9 +105,7 @@ export default async function ArtikelDetail({ params }) {
           <span className="avatar">{initials(article.author)}</span>
           <div className="who">
             <b>{article.author}</b>
-            <span>
-              <ArtJournalist slug={cat.slug} />
-            </span>
+            <span>Jurnalis News5 — Kanal {cat.name}</span>
           </div>
         </div>
       </div>
@@ -120,12 +114,8 @@ export default async function ArtikelDetail({ params }) {
         <div className="container">
           <Reveal variant="mask">
             <div className="sec-head" style={{ marginBottom: 30 }}>
-              <h2>
-                <T k="art.related" />
-              </h2>
-              <span className="count">
-                <ArtChannel slug={cat.slug} />
-              </span>
+              <h2>Baca Juga</h2>
+              <span className="count">Kanal {cat.name}</span>
             </div>
           </Reveal>
           <div className="cards-3">

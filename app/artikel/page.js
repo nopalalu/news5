@@ -5,17 +5,14 @@ import {
   articles,
   categories,
   searchArticles,
-  getCategory,
 } from "../../lib/articles";
 import { ArticleCard } from "../../components/ArticleCard";
 import { IconNews } from "../../components/icons";
-import { useLang } from "../../components/Lang";
 import Reveal from "../../components/Reveal";
 
 export default function ArtikelPage() {
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState("semua");
-  const { t } = useLang();
 
   const results = useMemo(() => {
     let list = searchArticles(query);
@@ -26,17 +23,20 @@ export default function ArtikelPage() {
   return (
     <div className="container" style={{ paddingBottom: 40 }}>
       <div className="page-head">
-        <h1>{t("idx.title")}</h1>
-        <p>{t("idx.desc", { n: articles.length, m: categories.length })}</p>
+        <h1>Semua Artikel</h1>
+        <p>
+          Jelajahi {articles.length} artikel dari {categories.length} kategori
+          — cari berdasarkan judul, isi, atau topik.
+        </p>
       </div>
 
       <div className="search-row">
         <input
           type="text"
-          placeholder={t("idx.ph")}
+          placeholder="Cari artikel… mis. pemilu, konser, esports"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          aria-label={t("idx.ph")}
+          aria-label="Cari artikel"
         />
       </div>
 
@@ -45,7 +45,7 @@ export default function ArtikelPage() {
           className={`chip ${cat === "semua" ? "active" : ""}`}
           onClick={() => setCat("semua")}
         >
-          {t("idx.all")}
+          Semua
         </button>
         {categories.map((c) => (
           <button
@@ -53,7 +53,7 @@ export default function ArtikelPage() {
             className={`chip ${cat === c.slug ? "active" : ""}`}
             onClick={() => setCat(c.slug)}
           >
-            {t(`cat.${c.slug}`)}
+            {c.name}
           </button>
         ))}
       </div>
@@ -64,18 +64,19 @@ export default function ArtikelPage() {
             <IconNews />
           </div>
           <p>
-            {t("idx.empty")} “<b>{query}</b>”.<br />
-            {t("idx.emptyHint")}
+            Tidak ada artikel yang cocok dengan “<b>{query}</b>”.
+            <br />
+            Coba kata kunci lain.
           </p>
         </div>
       ) : (
         <>
           <p style={{ color: "var(--muted)", fontSize: 14, margin: "0 0 18px" }}>
-            {t("idx.showing", { n: results.length })}
+            Menampilkan {results.length} artikel
             {query && (
               <>
                 {" "}
-                {t("idx.for")} “<b>{query}</b>”
+                untuk “<b>{query}</b>”
               </>
             )}
           </p>

@@ -143,7 +143,7 @@ export default function Home() {
               </Reveal>
               <div className="chapter-grid">
                 {items.map((a, i) => (
-                  <Reveal key={a.slug} delay={(i % 3) * 110}>
+                  <Reveal key={a.slug} delay={(i % 3) * 110} variant="stamp">
                     <ArticleCard article={a} />
                   </Reveal>
                 ))}

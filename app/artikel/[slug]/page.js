@@ -120,7 +120,7 @@ export default async function ArtikelDetail({ params }) {
           </Reveal>
           <div className="cards-3">
             {related.map((a, i) => (
-              <Reveal key={a.slug} delay={(i % 3) * 110}>
+              <Reveal key={a.slug} delay={(i % 3) * 110} variant="stamp">
                 <ArticleCard article={a} />
               </Reveal>
             ))}

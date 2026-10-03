@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
  * IntersectionObserver hanya menambahkan class "play" untuk memicu
  * animasi masuk. Kalau JS/IO gagal, konten tetap tampil.
  *
- * variant: "up" (default) | "left" | "mask" | "wipe"
+ * variant: "up" (default) | "left" | "mask" | "wipe" | "stamp" (kartu)
  */
 export default function Reveal({
   children,
@@ -43,7 +43,9 @@ export default function Reveal({
         ? "rv-mask"
         : variant === "wipe"
           ? "rv-wipe"
-          : "rv-up";
+          : variant === "stamp"
+            ? "rv-stamp"
+            : "rv-up";
 
   return (
     <div

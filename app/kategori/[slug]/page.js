@@ -34,7 +34,7 @@ export default async function KategoriPage({ params }) {
       </div>
       <div className="cards-3" style={{ marginTop: 26 }}>
         {items.map((a, i) => (
-          <Reveal key={a.slug} delay={(i % 3) * 110}>
+          <Reveal key={a.slug} delay={(i % 3) * 110} variant="stamp">
             <ArticleCard article={a} />
           </Reveal>
         ))}

@@ -82,7 +82,7 @@ export default function ArtikelPage() {
           </p>
           <div className="cards-3">
             {results.map((a, i) => (
-              <Reveal key={a.slug} delay={(i % 3) * 90}>
+              <Reveal key={a.slug} delay={(i % 3) * 90} variant="stamp">
                 <ArticleCard article={a} />
               </Reveal>
             ))}

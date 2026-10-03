@@ -5,6 +5,10 @@ export default function Footer() {
   return (
     <footer>
       <div className="container">
+        <div className="foot-word">
+          News<span className="five">5</span>
+        </div>
+        <div className="foot-tag">Kabar cepat · Tepat · Terpercaya</div>
         <div className="foot-grid">
           <div>
             <div className="foot-brand">

@@ -2,6 +2,7 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Intro from "../components/Intro";
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
+        <Intro />
         <div className="topbar">
           <div className="container">
             <span>

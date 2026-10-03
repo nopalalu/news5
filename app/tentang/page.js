@@ -1,7 +1,42 @@
+import { IconCheck } from "../../components/icons";
+
 export const metadata = {
   title: "Tentang Kami — News5",
   description: "Mengenal News5: portal berita modern Indonesia.",
 };
+
+const team = [
+  { name: "Rina Kartika", role: "Redaktur Kanal Hukum" },
+  { name: "Salsa Bila", role: "Redaktur Kanal Hiburan" },
+  { name: "Andi Nugraha", role: "Redaktur Kanal Politik" },
+  { name: "Rizky Ramadhan", role: "Redaktur Kanal Game" },
+  { name: "Maya Anggraini", role: "Jurnalis Ekonomi & UMKM" },
+  { name: "Bagas Pratama", role: "Jurnalis Hiburan & Game" },
+];
+
+const values = [
+  {
+    title: "Akurasi dulu, kecepatan kemudian",
+    desc: "Kami memverifikasi fakta sebelum menekan tombol terbit. Salah satu kesalahan yang dikoreksi terbuka lebih baik daripada seribu klik dari judul menyesatkan.",
+  },
+  {
+    title: "Tanpa clickbait",
+    desc: "Judul kami menggambarkan isi. Pembaca yang kecewa dengan judul tidak akan kembali — kami membangun kepercayaan, bukan sekadar traffic.",
+  },
+  {
+    title: "Terbuka untuk semua",
+    desc: "Tanpa login wajib, tanpa paywall. Informasi yang baik seharusnya bisa diakses siapa pun.",
+  },
+];
+
+function initials(name) {
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
 
 export default function TentangPage() {
   return (
@@ -33,6 +68,53 @@ export default function TentangPage() {
           <div className="num">100%</div>
           <div className="lbl">Gratis Dibaca</div>
         </div>
+      </div>
+
+      <h2
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: 26,
+          margin: "34px 0 6px",
+        }}
+      >
+        Prinsip Redaksi
+      </h2>
+      <ul className="values">
+        {values.map((v) => (
+          <li key={v.title}>
+            <span className="v-check">
+              <IconCheck />
+            </span>
+            <span>
+              <b>{v.title}.</b> {v.desc}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <h2
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: 26,
+          margin: "34px 0 6px",
+        }}
+      >
+        Tim Redaksi
+      </h2>
+      <p>
+        News5 dijalankan oleh tim kecil yang merangkap banyak peran —
+        menulis, mengedit, memotret, dan menerbitkan.
+      </p>
+      <div className="team-grid">
+        {team.map((t) => (
+          <div className="team-card" key={t.name}>
+            <span className="avatar">{initials(t.name)}</span>
+            <div>
+              <b>{t.name}</b>
+              <span>{t.role}</span>
+            </div>
+          </div>
+        ))}
       </div>
 
       <p>
